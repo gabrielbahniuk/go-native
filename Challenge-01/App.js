@@ -10,20 +10,25 @@ import {
 
 import Post from './components/Post';
 
+const containerBackground = '#EE7777';
+const headerBackground = '#FFFFFF';
+const headerTextColor = '#333333';
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EE7777',
+    backgroundColor: containerBackground,
   },
   header: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: headerBackground,
     height: Platform.OS === 'ios' ? 70 : 50,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   headerText: {
     fontSize: 18,
-    color: '#333333',
+    color: headerTextColor,
     fontWeight: 'bold',
   },
 });
@@ -75,7 +80,9 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>GoNative App</Text>
+          <Text style={styles.headerText}>
+            GoNative App
+          </Text>
         </View>
         <ScrollView>
           {posts.map(post => <Post data={post} key={post.id} />)}

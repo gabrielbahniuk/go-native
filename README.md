@@ -1,2 +1,4 @@
 # GoNative
-Repository which aims to have all the challenges from React Native Course by @Rocketseat, each one in its respective branch.
+Repository to post challenges from the GoNative (React Native) course by @Rocketseat.
+
+For each challenge will be created a pull request - new branch - with the respective resolution.

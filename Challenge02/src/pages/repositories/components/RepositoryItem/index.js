@@ -1,28 +1,41 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { NavigationActions } from 'react-navigation';
 import styles from './styles';
 import PropTypes from 'prop-types';
 
-const RepositoryItem = ({ repository }) => (
-  <View style={styles.container}>
-    <Text style={styles.repoTitle}>{repository.full_name}</Text>
-    <View style={styles.infoContainer}>
-      <View style={styles.info}>
-        <Icon name="star" size={12} style={styles.infoIcon} />
-        <Text style={styles.infoText}>{repository.stargazers_count}</Text>
+export default class RepositoryItem extends Component {
+  openIssues = () => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Issues' })],
+    });
+
+    this.props.navigation.dispatch(resetAction);
+  };
+
+  render() {
+    const {
+      owner: { avatar_url, login },
+      full_name,
+    } = this.props.repository;
+    return (
+      <View style={styles.container}>
+        <View style={styles.infoContainer}>
+          <Image style={styles.avatarUrl} source={{ uri: avatar_url }} />
+          <View style={styles.info}>
+            <Text style={styles.repoTitle}>{full_name}</Text>
+            <Text style={styles.repoSubtitle}>{login}</Text>
+          </View>
+          <TouchableOpacity onPress={this.openIssues}>
+            <Icon name="angle-right" size={22} />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.info}>
-        <Icon name="code-fork" size={12} style={styles.infoIcon} />
-        <Text style={styles.infoText}>{repository.forks_count}</Text>
-      </View>
-      <View style={styles.info}>
-        <Icon name="eye" size={12} style={styles.infoIcon} />
-        <Text style={styles.infoText}>{repository.watchers_count}</Text>
-      </View>
-    </View>
-  </View>
-);
+    );
+  }
+}
 
 RepositoryItem.propTypes = {
   repository: PropTypes.shape({
@@ -32,4 +45,3 @@ RepositoryItem.propTypes = {
     watchers_count: PropTypes.number,
   }).isRequired,
 };
-export default RepositoryItem;

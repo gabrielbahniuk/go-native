@@ -1,65 +1,56 @@
+import '../../config/ReactotronConfig';
 import React, { Component } from 'react';
-
+import api from '../../services/api';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   FlatList,
-  AsyncStorage,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import RepositoryItem from './components/RepositoryItem';
+import styles from './styles';
 
 export default class Repositories extends Component {
+  static navigationOptions = {
+    title: 'GitIssues',
+  };
+
   state = {
     repositories: [],
     repository: '',
   };
 
-  componentDidMount() {
-    this.loadRepositories();
-  }
+  addRepository = async () => {
+    const { repository } = this.state;
 
-  addRepository = repository => {
+    if (repository.length === 0) return;
+
+    const response = await api.get(`/repos/${repository}`);
+
     this.setState({
-      repositories: [...this.state.repositories, repository],
+      repositories: [...this.state.repositories, response.data],
     });
-    console.log(repository);
-  };
-
-  saveRepository = async repository => {
-    await AsyncStorage.setItem(
-      '@Githuber:repositories',
-      JSON.stringify(repository),
-    );
-  };
-
-  loadRepositories = async () => {
-    const repositories = await AsyncStorage.getItem('@Githuber:repositories');
-    if (repositories) {
-      const repositoriesArray = JSON.parse(repositories);
-      const response = await api.get(`/repos/${repo}`);
-      this.setState({
-        repositories: [...this.state.repositories, response.data],
-      });
-    }
   };
 
   renderListItem = ({ item }) => <RepositoryItem repository={item} />;
 
   render() {
     return (
-      <View>
-        <TextInput
-          placeholder="Informe o repositorio..."
-          underlineColorAndroid="rgba(0,0,0,0)"
-          value={this.state.repository}
-          onChangeText={repository => this.setState({ repository })}
-        />
-        <TouchableOpacity onPress={this.addRepository}>
-          <Text>Add</Text>
-        </TouchableOpacity>
-
+      <View style={styles.container}>
+        <View style={styles.headerSearch}>
+          <TextInput
+            style={styles.input}
+            placeholder="Informe {organização/repositório}..."
+            underlineColorAndroid="rgba(0,0,0,0)"
+            value={this.state.repository}
+            onChangeText={repository => this.setState({ repository })}
+          />
+          <TouchableOpacity style={styles.button} onPress={this.addRepository}>
+            <Icon name="plus" size={18} />
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={this.state.repositories}
           keyExtractor={item => String(item.id)}

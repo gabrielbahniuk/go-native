@@ -4,21 +4,28 @@ import { general, metrics, colors } from 'styles';
 const styles = StyleSheet.create({
   container: {
     ...general.box,
-    marginHorizontal: metrics.basePadding,
     marginTop: metrics.baseMargin,
+  },
+  avatarUrl: {
+    width: 50,
+    height: 50,
   },
   repoTitle: {
     fontWeight: 'bold',
     fontSize: 14,
   },
+  repoSubtitle: {
+    fontSize: 12,
+  },
   infoContainer: {
     flexDirection: 'row',
-    marginTop: metrics.baseMargin,
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   info: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginRight: metrics.baseMargin,
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   infoIcon: {
     color: colors.dark,

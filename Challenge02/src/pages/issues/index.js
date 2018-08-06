@@ -29,7 +29,9 @@ export default class Issues extends Component {
 
   render() {
     return (
-      <View>{this.state.issues.map(issue => <Issue issue={issue} />)}</View>
+      <View>
+        {this.state.issues.map(issue => <Issue issue={issue} key={issue.id} />)}
+      </View>
     );
   }
 }

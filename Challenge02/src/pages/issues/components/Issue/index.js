@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image } from 'react-native';
 const Issue = ({ issue }) => {
   <View>
-    <Image src={issue.user.avatar_url} alt={issue.user.login} />
+    <Image source={{ uri: issue.user.avatar_url }} />
     <View className="info">
       <Text className="title">{issue.title}</Text>
 

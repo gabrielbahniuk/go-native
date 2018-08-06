@@ -4,29 +4,25 @@ import styles from './styles';
 
 export default class HeaderIssue extends Component {
   render() {
-    const { loadIssues } = this.props;
+    const { availableFilters, handleChangeFilter, activeFilter } = this.props;
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.stateButton}
-          onPress={() => loadIssues()}
-        >
-          <Text>All</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.stateButton}
-          onPress={() => loadIssues('open')}
-        >
-          <Text>Opened</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.stateButton}
-          onPress={() => loadIssues('closed')}
-        >
-          <Text>Closed</Text>
-        </TouchableOpacity>
+        {availableFilters.map(filter => (
+          <TouchableOpacity
+            key={filter.state}
+            style={styles.stateButton}
+            onPress={() => handleChangeFilter(filter.state)}
+          >
+            <Text
+              style={[
+                styles.filterText,
+                filter.state === activeFilter ? styles.activeFilterText : {},
+              ]}
+            >
+              {filter.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
     );
   }

@@ -1,13 +1,7 @@
 import '../../config/ReactotronConfig';
 import React, { Component } from 'react';
 import api from '../../services/api';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  AsyncStorage,
-} from 'react-native';
+import { View, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RepositoryItem from './components/RepositoryItem';
 import styles from './styles';
@@ -22,15 +16,8 @@ export default class Repositories extends Component {
     repository: '',
   };
 
-  async componentDidMount() {
-    const storageRepos = await JSON.parse(
-      AsyncStorage.getItem('@Githuber:repositories'),
-    );
-    console.tron.log(storageRepos);
-  }
-
-  openIssues = () => {
-    this.props.navigation.navigate('Issues');
+  openIssues = repository => {
+    this.props.navigation.navigate('Issues', { repository });
   };
 
   checkRepositoryExists = async repository => {
@@ -52,7 +39,10 @@ export default class Repositories extends Component {
   };
 
   renderListItem = ({ item }) => (
-    <RepositoryItem openIssues={this.openIssues} repository={item} />
+    <RepositoryItem
+      openIssues={() => this.openIssues(item)}
+      repository={item}
+    />
   );
 
   render() {

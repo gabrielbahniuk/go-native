@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import api from '../../services/api';
 import {
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   FlatList,
+  AsyncStorage,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RepositoryItem from './components/RepositoryItem';
@@ -22,19 +22,38 @@ export default class Repositories extends Component {
     repository: '',
   };
 
-  addRepository = async () => {
-    const { repository } = this.state;
+  async componentDidMount() {
+    const storageRepos = await JSON.parse(
+      AsyncStorage.getItem('@Githuber:repositories'),
+    );
+    console.tron.log(storageRepos);
+  }
 
-    if (repository.length === 0) return;
-
-    const response = await api.get(`/repos/${repository}`);
-
-    this.setState({
-      repositories: [...this.state.repositories, response.data],
-    });
+  openIssues = () => {
+    this.props.navigation.navigate('Issues');
   };
 
-  renderListItem = ({ item }) => <RepositoryItem repository={item} />;
+  checkRepositoryExists = async repository => {
+    const repo = await api.get(`/repos/${repository}`);
+    return repo;
+  };
+
+  addRepository = async () => {
+    const { repository } = this.state;
+    if (repository.length === 0) return;
+    try {
+      const response = await this.checkRepositoryExists(repository);
+      this.setState({
+        repositories: [...this.state.repositories, response.data],
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  renderListItem = ({ item }) => (
+    <RepositoryItem openIssues={this.openIssues} repository={item} />
+  );
 
   render() {
     return (

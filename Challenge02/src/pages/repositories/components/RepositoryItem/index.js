@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { NavigationActions } from 'react-navigation';
 import styles from './styles';
 import PropTypes from 'prop-types';
 
 export default class RepositoryItem extends Component {
-  openIssues = () => {
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'Issues' })],
-    });
-
-    this.props.navigation.dispatch(resetAction);
-  };
-
   render() {
     const {
       owner: { avatar_url, login },
@@ -28,7 +18,7 @@ export default class RepositoryItem extends Component {
             <Text style={styles.repoTitle}>{full_name}</Text>
             <Text style={styles.repoSubtitle}>{login}</Text>
           </View>
-          <TouchableOpacity onPress={this.openIssues}>
+          <TouchableOpacity onPress={this.props.openIssues}>
             <Icon name="angle-right" size={22} />
           </TouchableOpacity>
         </View>

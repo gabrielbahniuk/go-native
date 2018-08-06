@@ -1,7 +1,13 @@
 import '../../config/ReactotronConfig';
 import React, { Component } from 'react';
 import api from '../../services/api';
-import { View, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  AsyncStorage,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RepositoryItem from './components/RepositoryItem';
 import styles from './styles';
@@ -14,6 +20,20 @@ export default class Repositories extends Component {
   state = {
     repositories: [],
     repository: '',
+  };
+
+  componentDidMount() {
+    this.loadRepositories();
+  }
+
+  loadRepositories = async () => {
+    const myArray = await AsyncStorage.getItem('@Githuber:repos');
+    if (myArray) {
+      const repositories = JSON.parse(myArray);
+      this.setState({
+        repositories,
+      });
+    }
   };
 
   openIssues = repository => {
@@ -33,6 +53,10 @@ export default class Repositories extends Component {
       this.setState({
         repositories: [...this.state.repositories, response.data],
       });
+      await AsyncStorage.setItem(
+        '@Githuber:repos',
+        JSON.stringify(this.state.repositories),
+      );
     } catch (err) {
       console.log(err);
     }

@@ -4,15 +4,21 @@ import { general, metrics, colors } from 'styles';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    backgroundColor: colors.light,
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    height: 15,
+    marginBottom: metrics.baseMargin,
+    marginHorizontal: metrics.basePadding,
+    paddingVertical: 10,
+    borderRadius: metrics.baseRadius,
+  },
+  filterText: {
+    color: colors.regular,
   },
 
-  stateButton: {
-    padding: 10,
-    backgroundColor: '#666666',
+  activeFilterText: {
+    color: colors.dark,
+    fontWeight: 'bold',
   },
 });
 export default styles;

@@ -6,20 +6,21 @@ import PropTypes from 'prop-types';
 
 export default class RepositoryItem extends Component {
   render() {
-    const {
-      owner: { avatar_url, login },
-      full_name,
-    } = this.props.repository;
+    const { repository, openIssues } = this.props;
+
     return (
       <View style={styles.container}>
         <View style={styles.infoContainer}>
-          <Image style={styles.avatarUrl} source={{ uri: avatar_url }} />
+          <Image
+            style={styles.avatarUrl}
+            source={{ uri: repository.owner.avatar_url }}
+          />
           <View style={styles.info}>
-            <Text style={styles.repoTitle}>{full_name}</Text>
-            <Text style={styles.repoSubtitle}>{login}</Text>
+            <Text style={styles.repoTitle}>{repository.full_name}</Text>
+            <Text style={styles.repoSubtitle}>{repository.owner.login}</Text>
           </View>
-          <TouchableOpacity onPress={this.props.openIssues}>
-            <Icon name="angle-right" size={22} />
+          <TouchableOpacity onPress={openIssues}>
+            <Icon name="angle-right" size={20} />
           </TouchableOpacity>
         </View>
       </View>

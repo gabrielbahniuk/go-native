@@ -1,14 +1,20 @@
 import '../../config/ReactotronConfig';
 import React, { Component } from 'react';
 import api from '../../services/api';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import {
+  View,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import styles from './styles';
 import Issue from './components/Issue';
+import HeaderIssue from './components/HeaderIssue';
 
 export default class Issues extends Component {
   state = {
     issues: [],
-    issueState: 'all',
     loading: true,
     refreshing: false,
   };
@@ -18,14 +24,14 @@ export default class Issues extends Component {
   };
 
   componentDidMount() {
-    const { repository } = this.props.navigation.state.params;
-    this.loadIssues(repository.full_name);
+    this.loadIssues();
   }
 
-  loadIssues = async repository => {
+  loadIssues = async (issueState = 'all') => {
+    const { repository } = this.props.navigation.state.params;
     this.setState({ refreshing: true });
     const response = await api.get(
-      `/repos/${repository}/issues?state=${this.state.issueState}`,
+      `/repos/${repository.full_name}/issues?state=${issueState}`,
     );
     this.setState({ issues: response.data, loading: false, refreshing: false });
   };
@@ -33,15 +39,16 @@ export default class Issues extends Component {
   renderListItem = ({ item }) => <Issue issue={item} />;
 
   renderListIssues = () => (
-    <FlatList
-      data={this.state.issues}
-      keyExtractor={item => String(item.id)}
-      renderItem={this.renderListItem}
-      onRefresh={this.loadIssues(
-        this.props.navigation.state.params.repository.full_name,
-      )}
-      refreshing={this.state.refreshing}
-    />
+    <View>
+      <HeaderIssue loadIssues={this.loadIssues} />
+      <FlatList
+        data={this.state.issues}
+        keyExtractor={item => String(item.id)}
+        renderItem={this.renderListItem}
+        onRefresh={this.loadIssues}
+        refreshing={this.state.refreshing}
+      />
+    </View>
   );
 
   render() {

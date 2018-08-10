@@ -75,7 +75,7 @@ export default class Repositories extends Component {
         <View style={styles.headerSearch}>
           <TextInput
             style={styles.input}
-            placeholder="Informe {organização/repositório}..."
+            placeholder="Type {organization/repository}..."
             underlineColorAndroid="rgba(0,0,0,0)"
             value={this.state.repository}
             onChangeText={repository => this.setState({ repository })}

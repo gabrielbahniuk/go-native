@@ -1,32 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import PropTypes from 'prop-types';
 
-export default class RepositoryItem extends Component {
-  render() {
-    const { repository, openIssues } = this.props;
-
-    return (
-      <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <Image
-            style={styles.avatarUrl}
-            source={{ uri: repository.owner.avatar_url }}
-          />
-          <View style={styles.info}>
-            <Text style={styles.repoTitle}>{repository.full_name}</Text>
-            <Text style={styles.repoSubtitle}>{repository.owner.login}</Text>
-          </View>
-          <TouchableOpacity onPress={openIssues}>
-            <Icon name="angle-right" size={20} />
-          </TouchableOpacity>
-        </View>
+const RepositoryItem = ({ repository, openIssues }) => (
+  <View style={styles.container}>
+    <View style={styles.infoContainer}>
+      <Image
+        style={styles.avatarUrl}
+        source={{ uri: repository.owner.avatar_url }}
+      />
+      <View style={styles.info}>
+        <Text style={styles.repoTitle}>{repository.full_name}</Text>
+        <Text style={styles.repoSubtitle}>{repository.owner.login}</Text>
       </View>
-    );
-  }
-}
+      <TouchableOpacity onPress={openIssues}>
+        <Icon name="angle-right" size={20} />
+      </TouchableOpacity>
+    </View>
+  </View>
+);
+export default RepositoryItem;
 
 RepositoryItem.propTypes = {
   repository: PropTypes.shape({
